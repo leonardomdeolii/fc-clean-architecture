@@ -5,19 +5,31 @@ describe("Order unit tests", () => {
   it("should throw error when id is empty", () => {
     expect(() => {
       let order = new Order("", "123", []);
-    }).toThrowError("Id is required");
+    }).toThrowError("order: Id is required");
   });
 
   it("should throw error when customerId is empty", () => {
     expect(() => {
       let order = new Order("123", "", []);
-    }).toThrowError("CustomerId is required");
+    }).toThrowError("order: CustomerId is required");
   });
 
-  it("should throw error when customerId is empty", () => {
+  it("should throw error when items are empty", () => {
     expect(() => {
       let order = new Order("123", "123", []);
-    }).toThrowError("Items are required");
+    }).toThrowError("order: Items are required");
+  });
+
+  it("should throw error when id and customerId are empty", () => {
+    expect(() => {
+      let order = new Order("", "", []);
+    }).toThrowError("order: Id is required,order: CustomerId is required");
+  });
+
+  it("should throw error when id is empty and items are empty", () => {
+    expect(() => {
+      let order = new Order("", "123", []);
+    }).toThrowError("order: Id is required,order: Items are required");
   });
 
   it("should calculate total", () => {
@@ -38,6 +50,6 @@ describe("Order unit tests", () => {
     expect(() => {
       const item = new OrderItem("i1", "Item 1", 100, "p1", 0);
       const order = new Order("o1", "c1", [item]);
-    }).toThrowError("Quantity must be greater than 0");
+    }).toThrowError("order: Quantity must be greater than 0");
   });
 });

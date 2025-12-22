@@ -1,16 +1,25 @@
+import Notification from "../../@shared/notification/notification";
+import NotificationError from "../../@shared/notification/notification.error";
+import AddressValidatorFactory from "../factory/address.validator.factory";
+
 export default class Address {
   _street: string = "";
   _number: number = 0;
   _zip: string = "";
   _city: string = "";
+  public notification: Notification;
 
   constructor(street: string, number: number, zip: string, city: string) {
+    this.notification = new Notification();
     this._street = street;
     this._number = number;
     this._zip = zip;
     this._city = city;
 
     this.validate();
+    if (this.notification.hasErrors()) {
+      throw new NotificationError(this.notification.getErrors());
+    }
   }
 
   get street(): string {
@@ -29,19 +38,8 @@ export default class Address {
     return this._city;
   }
   
-  validate() {
-    if (this._street.length === 0) {
-      throw new Error("Street is required");
-    }
-    if (this._number === 0) {
-      throw new Error("Number is required");
-    }
-    if (this._zip.length === 0) {
-      throw new Error("Zip is required");
-    }
-    if (this._city.length === 0) {
-      throw new Error("City is required");
-    }
+  validate(): void {
+    AddressValidatorFactory.create().validate(this);
   }
 
   toString() {
